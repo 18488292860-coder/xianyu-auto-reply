@@ -1,0 +1,233 @@
+<?php
+header('Content-Type: application/json; charset=utf-8');
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Methods: POST, OPTIONS');
+header('Access-Control-Allow-Headers: Content-Type');
+
+// 错误日志设置
+error_reporting(E_ALL);
+ini_set('log_errors', 1);
+ini_set('error_log', '../error.log');
+
+// 使用mysqli连接
+$conn = new mysqli('localhost', 'root', '123456', 'test');
+if ($conn->connect_error) {
+    echo json_encode(array('success' => false, 'message' => '数据库连接失败'));
+    exit;
+}
+$conn->set_charset("utf8mb4");
+
+$response = array('success' => false, 'message' => '', 'data' => null);
+
+try {
+    if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+        throw new Exception('只支持POST请求');
+    }
+    
+    if (!isset($_FILES['file']) || $_FILES['file']['error'] !== UPLOAD_ERR_OK) {
+        throw new Exception('文件上传失败');
+    }
+    
+    $file = $_FILES['file'];
+    $room_id = isset($_POST['room_id']) ? $conn->real_escape_string($_POST['room_id']) : '';
+    $user_name = isset($_POST['user_name']) ? $conn->real_escape_string($_POST['user_name']) : '';
+    $user_role = isset($_POST['user_role']) ? $conn->real_escape_string($_POST['user_role']) : 'guest';
+    
+    if (empty($room_id) || empty($user_name)) {
+        throw new Exception('房间ID和用户名不能为空');
+    }
+    
+    // 简化验证：只要有房间ID和用户名就允许上传
+    // 检查房间是否存在
+    $room_result = $conn->query("SELECT room_id FROM chatroom_list WHERE room_id = '$room_id' AND status = 'active'");
+    if (!$room_result || $room_result->num_rows == 0) {
+        throw new Exception('聊天室不存在或已禁用');
+    }
+    
+    // 简化配置，使用固定值
+    $max_size = 10 * 1024 * 1024; // 10MB
+    $allowed_types = array('jpg', 'jpeg', 'png', 'gif', 'webp', 'mp4', 'webm', 'mov', 'avi', 'pdf', 'doc', 'docx', 'txt');
+    
+    // 验证文件大小
+    if ($file['size'] > $max_size) {
+        throw new Exception('文件大小超过限制(' . formatBytes($max_size) . ')');
+    }
+    
+    // 验证文件类型
+    $file_ext = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
+    if (!in_array($file_ext, $allowed_types)) {
+        throw new Exception('不支持的文件类型');
+    }
+    
+    // 确定消息类型
+    $message_type = 'file';
+    if (in_array($file_ext, array('jpg', 'jpeg', 'png', 'gif', 'webp'))) {
+        $message_type = 'image';
+    } elseif (in_array($file_ext, array('mp4', 'webm', 'mov', 'avi'))) {
+        $message_type = 'video';
+    }
+    
+    // 创建上传目录
+    $upload_dir = '../../../upload/chatroom/' . date('Y/m/');
+    if (!is_dir($upload_dir)) {
+        mkdir($upload_dir, 0755, true);
+    }
+    
+    // 生成文件名
+    $new_filename = date('YmdHis') . '_' . uniqid() . '.' . $file_ext;
+    $file_path = $upload_dir . $new_filename;
+    $relative_path = 'upload/chatroom/' . date('Y/m/') . $new_filename;
+    
+    // 移动文件
+    if (!move_uploaded_file($file['tmp_name'], $file_path)) {
+        throw new Exception('文件保存失败');
+    }
+    
+    // 如果是图片，生成缩略图
+    $thumbnail_url = null;
+    if ($message_type === 'image') {
+        $thumbnail_url = generateThumbnail($file_path, $relative_path);
+    }
+    
+    // 保存到数据库（包含user_id字段）
+    $now = date('Y-m-d H:i:s');
+    $file_url = '/' . $relative_path;
+    $file_name_escaped = $conn->real_escape_string($file['name']);
+    
+    // 生成user_id（与API保持一致）
+    $user_id = $user_role . '_' . md5($user_name . $room_id);
+    $user_id_escaped = $conn->real_escape_string($user_id);
+    
+    $sql = "INSERT INTO chatroom_messages 
+            (user_id, room_id, user_name, user_type, message_type, content, file_name, file_size, file_url, send_time) 
+            VALUES ('$user_id_escaped', '$room_id', '$user_name', '$user_role', '$message_type', '$file_url', '$file_name_escaped', '{$file['size']}', '$file_url', '$now')";
+    
+    if ($conn->query($sql)) {
+        $message_id = $conn->insert_id;
+        
+        // 更新用户活跃时间
+        $conn->query("UPDATE chatroom_users SET last_active = '$now' WHERE room_id = '$room_id' AND user_name = '$user_name'");
+        
+        $response = array(
+            'success' => true,
+            'message' => '上传成功',
+            'data' => array(
+                'message_id' => $message_id,
+                'file_url' => $file_url,
+                'file_name' => $file['name'],
+                'file_size' => $file['size'],
+                'message_type' => $message_type,
+                'thumbnail_url' => $thumbnail_url
+            )
+        );
+    } else {
+        error_log("文件上传-数据库保存失败: " . $conn->error);
+        throw new Exception('数据库保存失败: ' . $conn->error);
+    }
+    
+} catch (Exception $e) {
+    error_log("文件上传异常: " . $e->getMessage());
+    $response['message'] = $e->getMessage();
+}
+
+echo json_encode($response, JSON_UNESCAPED_UNICODE);
+$conn->close();
+
+// 格式化文件大小
+function formatBytes($size, $precision = 2) {
+    $units = array('B', 'KB', 'MB', 'GB');
+    
+    for ($i = 0; $size > 1024 && $i < count($units) - 1; $i++) {
+        $size /= 1024;
+    }
+    
+    return round($size, $precision) . ' ' . $units[$i];
+}
+
+// 生成缩略图
+function generateThumbnail($original_path, $relative_path) {
+    try {
+        $info = getimagesize($original_path);
+        if (!$info) return null;
+        
+        $thumb_dir = dirname($original_path) . '/thumbs/';
+        if (!is_dir($thumb_dir)) {
+            mkdir($thumb_dir, 0755, true);
+        }
+        
+        $thumb_filename = 'thumb_' . basename($original_path);
+        $thumb_path = $thumb_dir . $thumb_filename;
+        $thumb_relative = dirname($relative_path) . '/thumbs/' . $thumb_filename;
+        
+        // 如果缩略图已存在，直接返回
+        if (file_exists($thumb_path)) {
+            return '/' . $thumb_relative;
+        }
+        
+        $width = $info[0];
+        $height = $info[1];
+        $type = $info[2];
+        
+        // 计算缩略图尺寸
+        $thumb_width = 150;
+        $thumb_height = 150;
+        
+        if ($width > $height) {
+            $thumb_height = intval($height * $thumb_width / $width);
+        } else {
+            $thumb_width = intval($width * $thumb_height / $height);
+        }
+        
+        // 创建源图像
+        switch ($type) {
+            case IMAGETYPE_JPEG:
+                $source = imagecreatefromjpeg($original_path);
+                break;
+            case IMAGETYPE_PNG:
+                $source = imagecreatefrompng($original_path);
+                break;
+            case IMAGETYPE_GIF:
+                $source = imagecreatefromgif($original_path);
+                break;
+            default:
+                return null;
+        }
+        
+        if (!$source) return null;
+        
+        // 创建缩略图
+        $thumb = imagecreatetruecolor($thumb_width, $thumb_height);
+        
+        // 保持透明度
+        if ($type == IMAGETYPE_PNG || $type == IMAGETYPE_GIF) {
+            imagealphablending($thumb, false);
+            imagesavealpha($thumb, true);
+            $transparent = imagecolorallocatealpha($thumb, 255, 255, 255, 127);
+            imagefilledrectangle($thumb, 0, 0, $thumb_width, $thumb_height, $transparent);
+        }
+        
+        imagecopyresampled($thumb, $source, 0, 0, 0, 0, $thumb_width, $thumb_height, $width, $height);
+        
+        // 保存缩略图
+        switch ($type) {
+            case IMAGETYPE_JPEG:
+                imagejpeg($thumb, $thumb_path, 85);
+                break;
+            case IMAGETYPE_PNG:
+                imagepng($thumb, $thumb_path);
+                break;
+            case IMAGETYPE_GIF:
+                imagegif($thumb, $thumb_path);
+                break;
+        }
+        
+        imagedestroy($source);
+        imagedestroy($thumb);
+        
+        return '/' . $thumb_relative;
+        
+    } catch (Exception $e) {
+        return null;
+    }
+}
+?> 

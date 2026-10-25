@@ -1,0 +1,8 @@
+上传解压源码
+导入数据库
+配置数据库
+第一个include/dbConfig.php
+第二个Dev/chatRoom/db_Config.php
+后台账号123456密码123456
+访问域名直接登录后台
+技术支持联系金条Tg@jintiao789

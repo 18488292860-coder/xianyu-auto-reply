@@ -1,0 +1,23 @@
+{
+  "id": "2372294",
+  "name": "客服",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "343489",
+      "name": "uniE679",
+      "font_class": "unie679",
+      "unicode": "e725",
+      "unicode_decimal": 59173
+    },
+    {
+      "icon_id": "843398",
+      "name": "图片",
+      "font_class": "tupian",
+      "unicode": "e6dd",
+      "unicode_decimal": 59101
+    }
+  ]
+}

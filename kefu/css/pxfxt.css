@@ -1,0 +1,192 @@
+/* 清除默认边距 */
+* {
+	padding: 0;
+	margin: 0;
+}
+
+body {
+	background-color: #f8f6f9;
+	font-family: 'PingFang SC', sans-serif;
+}
+
+.bxs {
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+}
+
+.fankuai {
+	padding-bottom: 10px;
+	width: 95%;
+	background-color: #fefefe;
+	border-radius: 10px;
+	margin-top: 14px;
+}
+
+.fk {
+	width: 100%;
+	background-color: #fff;
+	height: 50px;
+	position: relative;
+	display: flex;
+}
+
+.fk .fanh {
+	height: 50px;
+	display: flex;
+	align-items: center;
+	margin-left: 0.625rem;
+}
+
+.fk .fanh div {
+	width: 9px;
+	height: 9px;
+	border: 2px solid #000;
+	border-right: none;
+	transform: rotate(-45deg);
+	border-bottom: none;
+}
+
+.fk h2 {
+	position: absolute;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	top: 50%;
+	font-size: 17px;
+}
+
+.shangpxq {
+	display: flex;
+	flex-direction: row;
+}
+
+.sptp img {
+	width: 120px;
+	height: 80px;
+	border-radius: 10px;
+}
+
+.sptp,
+.spxq {
+	margin-top: 10px;
+	margin-left: 10px;
+	font-size: 15px;
+}
+
+#ptxq {
+	background-color: #fff7ed;
+	padding: 2px;
+	font-size: 11px;
+	color: #e5c5a3;
+}
+
+.pt {
+	margin-right: 10px;
+}
+
+#shangpbt {
+	font-weight: 700;
+}
+
+#jies {
+	font-size: 10px;
+}
+
+.shangpjies {
+	color: #cbc8cb;
+}
+
+#spjg {
+	font-size: 17px;
+}
+
+#spjg::first-letter {
+	font-size: 12px;
+}
+
+.xq {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	margin-left: 10px;
+	margin-right: 10px;
+	margin-top: 10px;
+	font-size: 14px;
+	color: #acaaad;
+}
+
+#huangs {
+	color: #e3ab65;
+}
+
+.jiag::first-letter {
+	font-size: 15px;
+}
+
+.lxkefttop {
+	margin-top: 10px;
+	font-size: 14px;
+	margin-left: 15px;
+	font-weight: 500;
+	margin-right: 10px;
+	color: #e3ab65;
+}
+.saoma{
+	display: flex;
+	margin-right: 0;
+	position: relative;
+	bottom: 10px;
+}
+.wxts{
+	display: flex;
+	margin-top: 10px;
+}
+.saoma button{
+	border: none;
+	width: 220px;
+	height: 35px;
+	border-radius: 5px;
+	background-color: #f18d2b;
+	color: #f7f7f7;
+	margin-left: 15px;
+	margin-top: 5px;
+	position: relative;
+}
+#bxswxts{
+	margin-left: 15px;
+	margin-right: 15px;
+	font-size: 14px;
+}
+.lxkefuright img{
+	width: 80px;
+	margin-right: 10px;
+}
+.ddxq{
+    display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	margin-left: 10px;
+	margin-right: 10px;
+	margin-top: 10px;
+	font-size: 14px;
+	color: #acaaad;
+}
+.zxkf{
+	width:100%;
+	height: 60px;
+	background: #fff;
+	margin-top: 15px;
+	position: fixed;
+	bottom: 0vh;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	}
+	.zxkf button{
+	    width: 90%;
+	    height: 50px;
+	    border-radius: 5px;
+	    background: #f18d2b;
+	    color: #fff;
+	    font-size: 16px;
+	}

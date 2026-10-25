@@ -1,0 +1,20 @@
+# Apache配置 - 支持大文件上传
+php_value upload_max_filesize 150M
+php_value post_max_size 150M
+php_value max_execution_time 300
+php_value max_input_time 300
+php_value memory_limit 256M
+
+# 如果是Apache 2.4+，设置请求体大小限制
+<IfModule mod_core.c>
+    LimitRequestBody 157286400
+</IfModule>
+
+# 确保PHP能够处理大文件
+<IfModule mod_php.c>
+    php_value upload_max_filesize 150M
+    php_value post_max_size 150M
+    php_value max_execution_time 300
+    php_value max_input_time 300
+    php_value memory_limit 256M
+</IfModule>

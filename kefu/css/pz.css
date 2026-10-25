@@ -1,0 +1,299 @@
+* {
+	padding: 0;
+	margin: 0;
+}
+.spxq {
+	width: 90%;
+	background-color: #ffffff;
+	border-radius: 15px;
+	padding-bottom: 10px;
+	display: flex;
+	flex-direction: row;
+	margin-top: 10px;
+}
+
+.spxq img {
+	width: 80px;
+	height: 83px;
+	border-radius: 12px;
+	margin-left: 15px;
+	margin-top: 15px;
+}
+body {
+	background: #f4f5f9;
+	font-family: 'PingFang SC', sans-serif;
+}
+
+.bxs {
+	align-items: center;
+	display: flex;
+	flex-direction: column;
+}
+
+.fanhto {
+	width: 100%;
+	height: 40px;
+	background: #f4f5f9;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+}
+
+.fanhto img {
+	width: 21px;
+	height: 20px;
+	margin-left: 15px;
+}
+
+.fanhto h3 {
+	position: absolute;
+	left: 50%;
+	transform: translate(-50%);
+	font-weight: 600;
+	font-size: 1.2175rem;
+}
+
+
+
+.sp {
+	margin-top: 15px;
+	margin-left: 10px;
+	display: flex;
+	width: 80%;
+	flex-direction: column;
+	margin-right: 10px;
+	justify-content: space-between;
+}
+
+.spxs {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	margin-right: 10px;
+}
+
+.bt p {
+	font-size: 14px;
+	font-weight: 700;
+	color: #000000;
+}
+.bzd {
+	font-size: 12px;
+	font-weight: 600;
+	color: #a3a3a3;
+}
+
+.jg {
+	font-size: 15px;
+	font-weight: 700;
+	color: #000000;
+}
+
+.jg p::first-letter {
+	font-size: 10px;
+}
+
+.bzaq {
+	width: 90%;
+	border-radius: 15px;
+	margin-top: 10px;
+	background-color: #ffffff;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-between;
+	padding-bottom: 15px;
+	padding-top: 15px;
+}
+
+.bhlogo {
+	display: flex;
+	align-items: center;
+	color: #ffc782;
+	font-size: 13px;
+}
+
+.bhlogo img {
+	width: 14px;
+	height: 14px;
+	margin-left: 13px;
+}
+
+.bhlogo p {
+	margin-left: 4px;
+}
+
+.fanh {
+	width: 8px;
+	height: 8px;
+	border: 2px solid #fbbe70;
+	border-left: none;
+	border-bottom: none;
+	transform: rotate(45deg);
+	margin-right: 15px;
+}
+
+.jiaoyiliuc {
+	width: 90%;
+	background-color: #ffffff;
+	border-radius: 15px;
+	margin-top: 10px;
+	padding-bottom: 15px;
+}
+
+.jylc {
+	margin-left: 15px;
+	margin-top: 0.9375rem;
+	display: flex;
+	justify-content: space-between;
+	flex-direction: row;
+	align-items: center;
+}
+
+.jy {
+	width: 100%;
+	justify-content: center;
+	display: flex;
+}
+
+.jil {
+	width: 90%;
+	height: 30px;
+	margin-top: 10px;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-evenly;
+}
+
+.jiaoyiyuan {
+	height: 20px;
+	display: flex;
+	align-items: center;
+	position: relative;
+}
+
+.yuan {
+	width: 14px;
+	height: 14px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	border-radius: 50%;
+	background-color: #d0d5ff;
+}
+
+.yuan div {
+	width: 8px;
+	height: 8px;
+	border-radius: 50%;
+	background-color: #FF0000;
+}
+
+.jiaoyixian {
+	height: 20px;
+	width: 15%;
+	display: flex;
+	align-items: center;
+}
+
+.jiaoyixian div {
+	width: 100%;
+	height: 1px;
+	background-color: #FF0000;
+}
+.jyjs {
+	width: 100%;
+	margin-top: 30px;
+	display: flex;
+	flex-direction: row;
+	font-size: 13px;
+	justify-content: space-evenly;
+}
+.ts {
+	margin-top: 30px;
+	margin-left: 15px;
+	font-size: 13px;
+	color: #a3a3a3;
+}
+.saom {
+	width: 90%;
+	background: #fff;
+	border-radius: 15px;
+	margin-top: 10px;
+
+	padding-bottom: 10px;
+
+}
+.bxscs {
+	display: flex;
+	flex-direction: row;
+}
+.saom .jies {
+	margin-top: 5px;
+	margin-left: 10px;
+	font-size: 13px;
+}
+.ma {
+	margin-top: 5px;
+	margin-right: 10PX;
+	display: flex;
+	flex-direction: column;
+	justify-content: column;
+}
+#xscs{
+}
+.ma img {
+	width: 80px;
+	height: 80px;
+}
+.jies button {
+	width: 80%;
+	background: #FF0000;
+	border: none;
+	color: #fff;
+	border-radius: 3px;
+	height: 30px;
+	margin-top: 10px;
+}
+.ddxq{
+	width: 90%;
+	display: flex;
+	flex-direction: row;
+	margin-top: 10px;
+	align-items: center;
+}
+.ddxq div{
+	width: 6px;
+	height: 20px;
+	border-radius: 10px;
+	background: #FF0000;
+}
+.ddxq h4{
+	margin-left: 5px;
+	font-size: 16px;
+	font-weight: 600;
+}
+.dd{
+	width: 90%;
+	background-color: #fff;
+	border-radius: 15px;
+	margin-top: 10px;
+	padding-top: 5px;
+	padding-bottom: 10px;
+}
+.dd .xq{
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	margin-left: 12px;
+	margin-right: 12px;
+	font-size: 13px;
+	margin-top: 7px;
+}
+.ls{
+	color: #FF0000;
+	font-weight: 600;
+}
+.red{
+	color: #f24b4c;
+}
